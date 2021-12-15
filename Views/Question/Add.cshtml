@@ -1,0 +1,44 @@
+﻿@model StackOverFlowData.Models.Question
+@{
+    ViewBag.Title = "Add";
+}
+
+@{ 
+    if (!string.IsNullOrEmpty(User.Identity.Name))
+    { <form action="/Question/Add" method="post">
+        <div class="form-group">
+            <label>Question</label>
+            <textarea class="form-control" type="text" name="QQuestion" placeholder="Enter Question"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Category</label>
+            <select class="form-control" asp-for=CategoryCId>
+                <option value="">Please Select</option>
+                @foreach (var i in ViewBag.category)
+                {
+                    <option value=@i.CId>@i.CName</option>
+                }
+            </select>
+        </div>
+        <input class="form-control" type="hidden" name="QCreated" value="@DateTime.Now" />
+        <input class="form-control" type="hidden" name="VotesCount" value="0" />
+        <input class="form-control" type="hidden" name="AnswersCount" value="0" />
+        <input class="form-control" type="hidden" name="ViewsCount" value="0" />
+    
+            @foreach (var i in ViewBag.user)
+            {
+                if (i.UName == User.Identity.Name)
+                {
+                    <input class="form-control" type="hidden" name="UserUId" value="@i.UId" />
+                    break;
+                }
+
+            }
+        <input class="form-control" type="hidden" name="UId" value=1005 />
+        <div>
+            <button class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+        }
+    }
+

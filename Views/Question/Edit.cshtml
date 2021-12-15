@@ -1,0 +1,52 @@
+﻿@using StackOverFlowData.Models
+@model StackOverFlowData.Models.Question
+
+@{
+    ViewBag.Title = "Edit";
+}
+@using (var ctx = new StackDbContext())
+{
+var usern = (ctx.Users.Where(s => s.UId == @Model.UserUId).FirstOrDefault()).UName;                
+if (User.Identity.Name == usern )
+{
+using (Html.BeginForm("Edit", "Question", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+      
+
+<div class="form-horizontal">
+    <h4>Question</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.QId)
+    @Html.HiddenFor(m => m.QCreated)
+    @Html.HiddenFor(m => m.VotesCount)
+    @Html.HiddenFor(m => m.AnswersCount)
+    @Html.HiddenFor(m => m.ViewsCount)
+    @Html.HiddenFor(m => m.User.UId)
+    @Html.HiddenFor(m => m.Category.CId)
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.QQuestion, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.QQuestion, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.QQuestion, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-success" />
+        </div>
+    </div>
+</div>
+}
+}
+
+else { 
+<h1>You Don'T have the Right to Edit</h1>
+}
+<div>
+    <a href="~/Question/Show/@Model.QId">Back to Question</a>
+</div>
+}

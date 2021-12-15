@@ -1,0 +1,36 @@
+﻿@model StackOverFlowData.Models.User
+
+@{
+    ViewBag.Title = "MyProfile";
+}
+
+<h2>My Profile</h2>
+<table class="table table-bordered">
+    <tr class=text-light>
+        <th>Username</th>
+        <td>@Model.UName</td>
+    </tr>
+    <tr class=text-light>
+        <th>Email</th>
+        <td>@Model.UEmail</td>
+    </tr>
+    <tr class=text-light>
+        <th>Mobile</th>
+        <td>@Model.UMobile</td>
+    </tr>
+</table>
+
+<div class="col-md-12">
+    <div class="col-lg-12">
+        <h3>Questions by You</h3>
+            <ul class="list-group">
+                @foreach(var i in ViewBag.questions )
+                {
+                    if(i.UserUId == ViewBag.User.UId)
+                    {<li class="list-group-item">@i.QQuestion</li>}
+                }
+            </ul>
+    </div>
+</div>
+
+<a href="/home/index">Back</a>

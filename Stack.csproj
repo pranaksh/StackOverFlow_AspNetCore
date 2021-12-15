@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Identity\**" />
+    <Compile Remove="Models\**" />
+    <Content Remove="Identity\**" />
+    <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Identity\**" />
+    <EmbeddedResource Remove="Models\**" />
+    <None Remove="Identity\**" />
+    <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="bootstrap" Version="5.1.2" />
+    <PackageReference Include="jquery" Version="3.6.0" />
+    <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\StackOverFlow.Services\StackOverFlow.Services.csproj" />
+  </ItemGroup>
+
+</Project>

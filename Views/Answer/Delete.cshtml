@@ -1,0 +1,53 @@
+﻿@model StackOverFlowData.Models.Answer
+@{
+    ViewBag.Title = "Delete";
+}
+
+@{
+    string uname = "";
+    foreach (var i in ViewBag.user)
+    {
+        if (i.UId == Model.UId)
+        {
+            uname = i.UName;
+        }
+    }
+
+    if (User.Identity.Name == uname)
+    {
+        using (Html.BeginForm("Delete", "Answer", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+
+            <div class="form-horizontal">
+                <h4>Answer</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.AId)
+                @Html.HiddenFor(m => m.ACreated)
+                @Html.HiddenFor(m => m.Votes)
+                @Html.HiddenFor(m => m.UId)
+                @Html.HiddenFor(m => m.QuestionQId)
+                @Html.HiddenFor(m =>m.AAnswer)
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <label class="form-control">Are You Sure?</label>
+                        <a href="~/Question/Show/@Model.QuestionQId" class="btn btn-danger">Cancel</a>
+                        <button type="submit" class="btn btn-default">Delete</button>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <h1>You Don'T have the Right to Edit</h1>
+        <div>
+    <a href="~/Question/Show/@Model.QuestionQId" class="btn btn-danger">Back to Question</a>
+</div>
+    }
+}
+
+
+

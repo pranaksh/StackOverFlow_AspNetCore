@@ -1,0 +1,35 @@
+﻿@using StackOverFlowData.Models
+@model List<StackOverFlowData.Models.Question>
+@{
+    ViewBag.Title = "Index";
+}
+@{
+    if (!string.IsNullOrEmpty(User.Identity.Name))
+    {
+    <h2>Questions</h2>
+
+        foreach (var i in Model)
+        { 
+        <div class="card text-dark">
+            <div class="card-header">
+                @using (var ctx = new StackDbContext())
+                {
+                    var user = ctx.Users.Where(s => s.UId == i.UserUId).FirstOrDefault();
+                    <cite>By @user.UName</cite>
+                }
+            </div>
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                        <a href="~/Question/Show/@i.QId">@i.QQuestion</a>
+                        <cite class="info">Posted on @i.QCreated</cite>
+                    <footer class="modal-footer">
+                        <a class="btn btn-default" href="~/Answer/Add/@i.QId">Add an Answer</a>
+                    </footer>
+                </blockquote>
+            </div>
+        </div>
+            }
+        }
+    }
+
+

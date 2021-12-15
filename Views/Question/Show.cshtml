@@ -1,0 +1,88 @@
+﻿@model StackOverFlowData.Models.Question
+@using StackOverFlowData.Models;
+@{
+    ViewBag.Title = "Show";
+}
+@using( var ctx = new StackDbContext())
+{
+<div class="card text-dark">
+    <div class="card-header">
+        Question
+    </div>
+    <div class="card-body ">
+        <blockquote class="blockquote mb-0">
+            <h3>@Model.QQuestion</h3>
+        </blockquote>
+    </div>
+    @{
+    var usern = (ctx.Users.Where(s => s.UId == @Model.UserUId).FirstOrDefault()).UName;
+                
+    if (User.Identity.Name == usern )
+    {
+    <footer class="blockquote-footer">
+        <a href="~/Question/Edit/@Model.QId">Edit Question</a>
+    </footer>
+    }
+    }
+</div>
+
+    <h4>Answers</h4>
+    foreach (var i in ViewBag.answers)
+    {
+        if (i.QuestionQId == Model.QId)
+        {
+            <div class="card text-dark">
+                    <div class="card-header">
+                @{
+                            int x = i.UId;
+                            var user = ctx.Users.Where(s => s.UId == x).FirstOrDefault();
+                            <div class="pull-right">
+                                <cite>By @user.UName</cite>
+                            </div>
+                        }
+                        </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>@i.AAnswer</p>
+                    </blockquote>
+                </div>
+                    <footer class="blockquote-footer">
+                    @{
+                        string uname = "";
+                        foreach (var j in ViewBag.users)
+                        {
+                            
+                            if (j.UId == i.UId)
+                            {
+                                uname = j.UName;
+                            }
+                        }
+                        foreach (var j in ViewBag.votes)
+                        {
+                            if (j.AnswerAId ==i.AId && j.UId==ViewBag.curr)
+                            {
+                                <a class="btn btn-default" href="~/Answer/Vote/@i.AId">UNLIKE</a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-default" href="~/Answer/Vote/@i.AId">LIKE</a>
+                            }
+                        }
+                        
+                            <a class="btn btn-default" href="~/Answer/Vote/@i.AId">LIKE</a>
+                        
+                        if (User.Identity.Name == uname)
+                            {
+                                <a class="btn btn-default" href="~/Answer/Edit/@i.AId">Edit Answer</a>
+                                <a class="btn btn-default" href="~/Answer/Delete/@i.AId">Delete Answer</a>
+                            }
+                        }
+                        
+                    </footer>
+                </div>
+
+        }
+    }
+}
+
+
