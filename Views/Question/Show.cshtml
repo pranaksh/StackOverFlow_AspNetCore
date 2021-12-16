@@ -51,31 +51,40 @@
                         string uname = "";
                         foreach (var j in ViewBag.users)
                         {
-                            
+
                             if (j.UId == i.UId)
                             {
                                 uname = j.UName;
                             }
                         }
+                        int c = 0;
                         foreach (var j in ViewBag.votes)
                         {
                             if (j.AnswerAId ==i.AId && j.UId==ViewBag.curr)
                             {
-                                <a class="btn btn-default" href="~/Answer/Vote/@i.AId">UNLIKE</a>
-                            }
-                            else
-                            {
-                                <a class="btn btn-default" href="~/Answer/Vote/@i.AId">LIKE</a>
+                                c = 1;
+                                break;
                             }
                         }
-                        
-                            <a class="btn btn-default" href="~/Answer/Vote/@i.AId">LIKE</a>
-                        
+                        if (c == 1)
+                        { <a class="btn btn-default" href="~/Answer/Vote/@i.AId">UNLIKE</a>}
+                        else
+                        {<a class="btn btn-default" href="~/Answer/Vote/@i.AId">LIKE</a>
+                        }
+                        c = 0;
+                        foreach (var j in ViewBag.votes)
+                        {
+                            if (i.AId == j.AnswerAId)
+                            { c += 1; }
+                        }
                         if (User.Identity.Name == uname)
                             {
                                 <a class="btn btn-default" href="~/Answer/Edit/@i.AId">Edit Answer</a>
                                 <a class="btn btn-default" href="~/Answer/Delete/@i.AId">Delete Answer</a>
                             }
+                        <div class="social">
+                            <cite>@c Likes</cite>
+                        </div>
                         }
                         
                     </footer>

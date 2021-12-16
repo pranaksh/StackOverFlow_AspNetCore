@@ -47,7 +47,8 @@ namespace Stack.Controllers
             ViewBag.users = _userService.ShowAll();
             var votes = _votingservice.Showall();
             ViewBag.votes = votes;
-            ViewBag.curr= _userService.FindUser(User.Identity.Name);
+            var user= _userService.FindUser(User.Identity.Name);
+            ViewBag.curr = user.UId;
             return View(q);
         }
 

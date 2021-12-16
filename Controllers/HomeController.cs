@@ -28,15 +28,27 @@ namespace Stack.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Register(RegisterViewModel rvm)
+        public IActionResult Register(RegisterViewModel rvm,IFormFile P)
         {
             if (ModelState.IsValid)
             {
+                byte[] data = null;
+                if(P!=null)
+                {
+                    byte[] p1 = null;
+                    using (var fs1 = P.OpenReadStream())
+                    using (var ms1 = new MemoryStream())
+                    {
+                        fs1.CopyTo(ms1);
+                        p1 = ms1.ToArray();
+                    }
+                    data = p1;
+                }
                 var check = _userService.FindUser(rvm.Username);
                 var passwordHash = Crypto.HashPassword(rvm.Password);
                 if (check == null)
                 {
-                    var user = new User() { UName = rvm.Username, UEmail = rvm.Email, UMobile = rvm.Mobile, UPassword = passwordHash };
+                    var user = new User() { UName = rvm.Username, UEmail = rvm.Email, UMobile = rvm.Mobile, UPassword = passwordHash ,UPhoto=data};
                     _userService.SaveUser(user);
                     ViewBag.message = "Success";
                     return RedirectToAction("Index");
@@ -62,12 +74,13 @@ namespace Stack.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = _userService.FindUser(lvm.Username);
+                var user = _userService.FindUser(lvm.Username,lvm.Password);
                 if (user == null)
                 {
-                    ViewBag.message = "Register First";
+                    ViewBag.message = "Can't Find You";
                     return View();
                 }
+
             }
             var claims = new List<Claim> {
             new Claim(ClaimTypes.Name, lvm.Username),

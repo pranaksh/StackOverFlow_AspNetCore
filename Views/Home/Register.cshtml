@@ -5,7 +5,7 @@
 }
 
 
-@using (Html.BeginForm("Register", "Home", FormMethod.Post))
+@using (Html.BeginForm("Register", "Home", FormMethod.Post ,new { enctype = "multipart/form-data" }))
 {
 <div class="form-row mx-auto" style="width:300px">
     <h2>Register</h2>
@@ -35,6 +35,11 @@
         @Html.LabelFor(temp => temp.Mobile)
         @Html.TextBoxFor(temp => temp.Mobile, new { placeholder = "Mobile", @class = "form-control" })
         @Html.ValidationMessageFor(temp => temp.Mobile)
+    </div>
+
+    <div class="form-group col-md-12">
+        <label>Photo</label>
+        <input class="form-control" type="file" placeholder = "Picture" name="P"/>
     </div>
     <br>
         <div class="inline-d-xl-inline-flex">
