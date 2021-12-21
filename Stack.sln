@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackOverflow.Entities", ".
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{EFD55394-67EA-406F-AC4C-847C4043F6EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stack.Api", "..\Stack.Api\Stack.Api.csproj", "{ED57E834-0349-4E57-902D-683F93ADB3AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stack.Api", "..\Stack.Api\Stack.Api.csproj", "{ED57E834-0349-4E57-902D-683F93ADB3AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

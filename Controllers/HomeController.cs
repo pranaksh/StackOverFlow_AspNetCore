@@ -23,6 +23,10 @@ namespace Stack.Controllers
             _questionService = questionService;
             
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Register()
         {
             return View();
@@ -100,6 +104,37 @@ namespace Stack.Controllers
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index");
         }
+
+        public IActionResult Edit(int id)
+        {
+            var q = _userService.FindUser(id);
+            return View(q);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(User q,IFormFile P)
+        {
+            var u = _userService.FindUser(q.UId);
+            if (u.UName != q.UName)
+            {
+                var claims = new List<Claim> {
+                new Claim(ClaimTypes.Name, q.UName),
+                new Claim("UserDefined", "whatever")};
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+
+                HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                           principal,
+                           new AuthenticationProperties { IsPersistent = true });
+            }
+
+            _userService.Edit(q,P);
+
+
+            return RedirectToAction("Profiles");
+        }
+
         public IActionResult Index()
         {
             ViewBag.Title = "Index";
@@ -120,10 +155,16 @@ namespace Stack.Controllers
         public IActionResult Profiles()
         {
             var user=_userService.FindUser(User.Identity.Name);
-            ViewBag.User = _userService.FindUser(User.Identity.Name);
+            ViewBag.User = user;
             ViewBag.questions = _questionService.ShowAll();
             return View(user);
         }
+
+        public IActionResult Chat()
+        {
+            return View();
+        }
+
 
         public IActionResult About()
         {

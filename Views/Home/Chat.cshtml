@@ -1,0 +1,60 @@
+﻿<div class="row gy-4 mt-5 justify-content-center" data-aos="fade-up" data-aos-delay="250">
+    <div class="icon-box" id="userinfo">
+        <input type="hidden" class="form-control" id="username" value="@User.Identity.Name" />
+        <h3>Hi <em>@User.Identity.Name</em> Click on JOIN to Enter the Chat </h3>
+        <button type="button" class="btn btn-dark" onclick="SetUsername();">Join</button>
+    </div>
+    <div id="messagearea" class="row" style="display:none">
+        <div>Joined as : <b><span id="username1">Not Set</span></b></div>
+        <div class="row">
+            <div class="col-6">
+                <ul id=messagesList></ul>
+            </div>
+        </div>
+        <input type="text" id="message" />
+        <input type="button" id="sendButton" value="Send Message" />
+    </div>
+</div>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script>
+    "use strict";
+    var connection= new signalR.HubConnectionBuilder().withUrl("/chat").build();
+    var username= "";
+    document.getElementById("sendButton").disabled=true;
+
+    connection.on("RecieveMessage", function(user,message){
+        var msg=message.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+        var encodedMsg=user + " =>" + msg;
+        var li= document.createElement("li");
+        li.textContent=encodedMsg;
+        document.getElementById("messagesList").appendChild(li);
+    });
+
+    connection.start().then(function(){
+        document.getElementById("sendButton").disabled=false;
+    }).catch(function(err){
+        return console.error(err.toString());
+    });
+
+    document.getElementById("sendButton").addEventListener("click",function(event){
+        var message=document.getElementById("message").value;
+        connection.invoke("SendMessage",username,message).then(function(){
+            document.getElementById("message").value="";
+        }).catch(function (err){
+            return console.error(err.toString());
+        });
+        event.preventDefault();
+    });
+
+    function SetUsername()
+    {
+        var usernameinput =document.getElementById("username").value;
+        username=usernameinput;
+
+        document.getElementById("userinfo").style.display='none';
+        document.getElementById("messagearea").style.display='block';
+        document.getElementById("username1").innerText=usernameinput;
+    }
+</script>
+
+

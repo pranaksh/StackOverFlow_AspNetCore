@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Stack.Hubs;
 using StackOverFlow.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x => x.LoginPath = "/Home/Login");
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvcCore();
+builder.Services.AddSignalR();
 builder.Services.AddTransient<IVotingService, VotingService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IQuestionService, QuestionService>();
@@ -30,6 +32,11 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<Chat>("/chat");
+});
 
 app.MapControllerRoute(
     name: "default",
