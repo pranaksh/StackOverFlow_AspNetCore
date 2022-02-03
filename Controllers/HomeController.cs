@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using StackOverFlow.Services;
 using StackOverFlowData.Models;
+using Grpc.Net.Client;
+using GrpcService1;
 
 namespace Stack.Controllers
 {
@@ -111,6 +113,7 @@ namespace Stack.Controllers
             return View(q);
         }
 
+
         [HttpPost]
         public IActionResult Edit(User q,IFormFile P)
         {
@@ -160,6 +163,26 @@ namespace Stack.Controllers
             return View(user);
         }
 
+
+        public void GetUsers()
+        {
+            var channel = GrpcChannel.ForAddress("https://localhost:7187");
+            //var client= new Greeter.GreeterClient(channel);
+            //var Request = new HelloRequest { Name = "ajay" };
+            //var response = client.SayHello(Request);
+            //Console.WriteLine(response.Message);
+            //Console.ReadKey();
+            var client = new crud.crudClient(channel);
+            var Request = new request { };
+            var response = client.Show(Request);
+            foreach (var i in response.Listofusers)
+            {
+                Console.WriteLine(i.UName);
+                Console.WriteLine(i.UEmail);
+                Console.WriteLine(i.UMobile);
+            }
+        }
+        
         public IActionResult Chat()
         {
             return View();

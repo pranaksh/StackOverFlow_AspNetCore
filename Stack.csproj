@@ -19,16 +19,41 @@
 
   <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.1.2" />
+    <PackageReference Include="Google.Protobuf" Version="3.19.4" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.42.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.43.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="jquery" Version="3.6.0" />
-    <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.7" />
+	<PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
 
+	<ItemGroup>
+	  <None Remove="Protos\greet.proto" />
+	  <None Remove="Protos\Stack.proto" />
+	</ItemGroup>
+
   <ItemGroup>
+    <ProjectReference Include="..\GrpcService1\GrpcService1.csproj" />
     <ProjectReference Include="..\StackOverFlow.Services\StackOverFlow.Services.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Update="Protos\greet.proto">
+      <GrpcServices>Client</GrpcServices>
+    </Protobuf>
+    <Protobuf Update="Protos\Stack.proto">
+      <GrpcServices>Client</GrpcServices>
+    </Protobuf>
+  </ItemGroup>
+	<ItemGroup>
+		<Protobuf Include="Protos\Greet.proto" GrpcServices="Client" />
+		<Protobuf Include="Protos\Stack.proto" GrpcServices="Client" />
+	</ItemGroup>
 
 </Project>

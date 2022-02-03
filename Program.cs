@@ -9,6 +9,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddControllersWithViews();
 builder.Services.AddMvcCore();
 builder.Services.AddSignalR();
+builder.Services.AddGrpc();
 builder.Services.AddTransient<IVotingService, VotingService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IQuestionService, QuestionService>();

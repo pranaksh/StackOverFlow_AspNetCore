@@ -1,0 +1,31 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcService1";
+
+package Stack;
+
+service crud
+{
+	//rpc Add() returns();
+	//rpc Update() returns();
+	//rpc Delete() returns();
+	rpc Show(request) returns (allusers);
+}
+
+message request
+{
+	string name=1;
+}
+
+message user
+{
+	int64 UId = 1;
+	string UEmail = 2;
+	string UMobile = 3;
+	string UName = 4;
+}
+
+message allusers
+{
+	repeated user listofusers=1;
+}
